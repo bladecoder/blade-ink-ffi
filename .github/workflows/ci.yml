@@ -1,0 +1,32 @@
+name: Rust CI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Rust
+      uses: actions-rs/toolchain@v1
+      with:
+        toolchain: stable
+        override: true
+
+    - name: Build
+      run: cargo build
+    
+    - name: Check Clippy
+      run: cargo clippy
+
+    - name: Check fmt
+      run: cargo fmt -- --check
+    
+    - name: Test
+      run: make -f tests/Makefile test 
