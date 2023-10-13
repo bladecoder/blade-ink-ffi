@@ -58,7 +58,7 @@ clib_check: $(CLIB_SO_DEV_DEBUG)
 	ln -sfv $(CLIB_SO_FULL) $(TMPDIR)/$(CLIB_SO_DEV)
 	mv $(CLIB_HEADER) $(TMPDIR)/$(shell basename $(CLIB_HEADER))
 	cc -g -Wall -Wextra -L$(TMPDIR) -I$(TMPDIR) \
-		-o $(TMPDIR)/bink_test clib/tests/bink_test.c -lbink
+		-o $(TMPDIR)/bink_test ./tests/bink_test.c ./tests/common.c -lbink
 	LD_LIBRARY_PATH=$(TMPDIR) \
 		valgrind --trace-children=yes --leak-check=full \
 		--error-exitcode=1 \
@@ -72,13 +72,17 @@ check: rust_check clib_check
 
 test: clean debug
 	cc -g -Wall -Wextra -Ltarget/debug -Itarget/debug \
-		-o target/debug/bink_test ./tests/bink_test.c -lbink
+		-o target/debug/bink_test ./tests/bink_test.c ./tests/common.c -lbink
 	LD_LIBRARY_PATH=target/debug \
 		target/debug/bink_test
 	cc -g -Wall -Wextra -Ltarget/debug -Itarget/debug \
-		-o target/debug/bink_tags_test ./tests/bink_tags_test.c -lbink
+		-o target/debug/bink_tags_test ./tests/bink_tags_test.c ./tests/common.c -lbink
 	LD_LIBRARY_PATH=target/debug \
 		target/debug/bink_tags_test
+	cc -g -Wall -Wextra -Ltarget/debug -Itarget/debug \
+		-o target/debug/bink_rt_test ./tests/bink_rt_test.c ./tests/common.c -lbink
+	LD_LIBRARY_PATH=target/debug \
+		target/debug/bink_rt_test
 
 clean:
 	- cargo clean

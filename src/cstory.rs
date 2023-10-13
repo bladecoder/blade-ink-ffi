@@ -119,7 +119,11 @@ pub extern "C" fn bink_story_get_current_choices(
 
 #[allow(clippy::not_unsafe_ptr_arg_deref)]
 #[no_mangle]
-pub extern "C" fn bink_story_choose_choice_index(story: *mut Story, choice_index: usize) -> u32 {
+pub extern "C" fn bink_story_choose_choice_index(
+    story: *mut Story,
+    choice_index: usize,
+    err_msg: *mut *mut c_char,
+) -> u32 {
     if story.is_null() {
         return BINK_FAIL_NULL_POINTER;
     }
@@ -130,7 +134,12 @@ pub extern "C" fn bink_story_choose_choice_index(story: *mut Story, choice_index
 
     match result {
         Ok(_) => BINK_OK,
-        Err(_) => BINK_FAIL,
+        Err(e) => {
+            unsafe {
+                *err_msg = CString::new(e.to_string()).unwrap().into_raw();
+            }
+            BINK_FAIL
+        }
     }
 }
 
@@ -155,6 +164,35 @@ pub extern "C" fn bink_story_get_current_tags(
             *tags = Box::into_raw(Box::new(result));
         },
         Err(_) => return BINK_FAIL,
+    }
+
+    BINK_OK
+}
+
+#[allow(clippy::not_unsafe_ptr_arg_deref)]
+#[no_mangle]
+pub extern "C" fn bink_story_choose_path_string(
+    story: *mut Story,
+    path: *const c_char,
+    err_msg: *mut *mut c_char,
+) -> u32 {
+    if story.is_null() || path.is_null() {
+        return BINK_FAIL_NULL_POINTER;
+    }
+
+    let story: &mut Story = unsafe { &mut *story };
+
+    let path_c_str: &CStr = unsafe { CStr::from_ptr(path) };
+    let path_str_slice: &str = path_c_str.to_str().unwrap();
+
+    let result = story.choose_path_string(path_str_slice, true, None);
+
+    if let Err(desc) = result {
+        unsafe {
+            *err_msg = CString::new(desc.to_string()).unwrap().into_raw();
+        }
+
+        return BINK_FAIL;
     }
 
     BINK_OK
