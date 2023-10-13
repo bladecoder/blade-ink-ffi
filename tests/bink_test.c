@@ -6,13 +6,13 @@
 #include <bink.h>
 
 
-void finish(int rc, struct bink_story *story, char *err_msg) {
+void finish(int rc, BINK_Story *story, char *err_msg) {
     bink_cstring_free(err_msg);
     bink_story_free(story);
     exit(rc);
 }
 
-void check_ret(int ret, struct bink_story *story, char *err_msg) {
+void check_ret(int ret, BINK_Story *story, char *err_msg) {
     if (ret != BINK_OK) {
         if(err_msg != NULL)
             perror(err_msg);
@@ -21,7 +21,7 @@ void check_ret(int ret, struct bink_story *story, char *err_msg) {
     }
 }
 
-void print_choices(struct bink_choices *choices, size_t len) {
+void print_choices(BINK_Choices *choices, size_t len) {
     for (size_t i=0; i < len; i++) {
         char *text = NULL;
         int ret = bink_choices_get_text(choices, i, &text);
@@ -70,8 +70,8 @@ char* read_json_file(const char* filename) {
 
 int main(void) {
     uint32_t ret = BINK_OK;
-    struct bink_story *story = NULL;
-    struct bink_choices *choices = NULL;
+    BINK_Story *story = NULL;
+    BINK_Choices *choices = NULL;
     char *err_msg = NULL;
     char *line = NULL;
     // char *json_string = "{\"inkVersion\":21,\"root\":[[\"^Line.\",\"\\n\",[\"done\",{\"#n\":\"g-0\"}],null],\"done\",null],\"listDefs\":{}}";

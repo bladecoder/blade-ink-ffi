@@ -7,13 +7,13 @@
 #include <bink.h>
 
 
-void finish(int rc, struct bink_story *story, char *err_msg) {
+void finish(int rc, BINK_Story *story, char *err_msg) {
     bink_cstring_free(err_msg);
     bink_story_free(story);
     exit(rc);
 }
 
-void check_ret(int ret, struct bink_story *story, char *err_msg) {
+void check_ret(int ret, BINK_Story *story, char *err_msg) {
     if (ret != BINK_OK) {
         if(err_msg != NULL)
             perror(err_msg);
@@ -58,8 +58,8 @@ char* read_json_file(const char* filename) {
 
 int main(void) {
     uint32_t ret = BINK_OK;
-    struct bink_story *story = NULL;
-    struct bink_tags *tags = NULL;
+    BINK_Story *story = NULL;
+    BINK_Tags *tags = NULL;
     char *err_msg = NULL;
     char *line = NULL;
 
