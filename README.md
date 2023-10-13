@@ -70,7 +70,7 @@ Check the [Blade Ink library source code](https://github.com/bladecoder/blade-in
 
 Compiled packages for the more common platforms containing the library for static and dynamic linking can be downloaded in the [Releases](https://github.com/bladecoder/blade-ink-ffi/releases) section.
 
-If there is no version of the library compiled for the platform you need, you can compile it yourself:
+If there is no version of the library compiled for the platform you need, you can compile it by yourself:
 
 ```bash
 $ rustup target add <your_platform_name>
@@ -85,4 +85,4 @@ We can execute the C tests in the `tests` folder using the `tests/Makefile` file
 $ make -f tests/Makefile test
 ```
 
-Tests only can be executed on Linux or Macos by now and you need to have installed a C tool chain.
+By now, tests can only be executed on Linux or Macos and you need to have installed a C tool chain.
