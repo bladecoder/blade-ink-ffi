@@ -7,6 +7,7 @@ C bindings for the Blade Ink Rust library.
 license = "Apache-2.0"
 authors = ["Rafael Garcia <bladecoder@gmail.com>"]
 readme = "README.md"
+repository = "https://github.com/bladecoder/blade-ink-ffi.git"
 edition = "2021"
 
 [lib]
