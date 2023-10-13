@@ -1,5 +1,5 @@
 [package]
-name = "bink"
+name = "bink-ffi"
 version = "0.2.0"
 description = """
 C bindings for the Blade Ink Rust library.
