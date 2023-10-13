@@ -37,8 +37,8 @@ RELEASE ?=0
 .PHONY: debug
 debug: $(CLIB_SO_DEV_DEBUG)
 	cp include/$(CLIB_HEADER) target/debug/
-	mv $(CLIB_SO_DEV_DEBUG) target/debug/$(CLIB_SO_FULL)
-	ln -sfv $(CLIB_SO_FULL) target/debug/$(CLIB_SO_DEV)
+	#mv $(CLIB_SO_DEV_DEBUG) target/debug/$(CLIB_SO_FULL)
+	#ln -sfv $(CLIB_SO_FULL) target/debug/$(CLIB_SO_DEV)
 
 $(CLIB_SO_DEV_RELEASE):
 	cargo build --all --release
@@ -48,8 +48,8 @@ $(CLIB_SO_DEV_DEBUG):
 
 clib: $(CLIB_HEADER) $(CLIB_SO_DEV_RELEASE) 
 	cp include/$(CLIB_HEADER) target/release/
-	mv $(CLIB_SO_DEV_RELEASE) target/release/$(CLIB_SO_FULL)
-	ln -sfv $(CLIB_SO_FULL) target/release/$(CLIB_SO_DEV)
+	#mv $(CLIB_SO_DEV_RELEASE) target/release/$(CLIB_SO_FULL)
+	#ln -sfv $(CLIB_SO_FULL) target/release/$(CLIB_SO_DEV)
 
 .PHONY: clib_check
 clib_check: $(CLIB_SO_DEV_DEBUG)

@@ -1,5 +1,5 @@
-[target.x86_64-unknown-linux-gnu]
-rustflags = "-Clink-arg=-Wl,-soname=libbink.so.0"
+# [target.x86_64-unknown-linux-gnu]
+# rustflags = "-Clink-arg=-Wl,-soname=libbink.so.0"
 
 # On Windows MSVC, statically link the C runtime so that the resulting EXE does
 # not depend on the vcruntime DLL.
