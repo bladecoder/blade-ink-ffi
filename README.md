@@ -1,5 +1,5 @@
 # blade-ink-ffi
-C foreign function interface, so that you can call Blade Ink Rust library from C.
+A wrapper library providing a C FFI for [Blade Ink](https://crates.io/crates/bladeink). Now you can call Blade Ink Rust library from C!
 
 Here we have an example of use extracted from the test that can be found in `tests/binc_test.c`:
 
@@ -62,7 +62,9 @@ int main(void) {
 }
 ```
 
-For more examples, check the `tests` folder in this repository.
+For more examples, check the `tests` folder in [this](https://github.com/bladecoder/blade-ink-ffi/tree/main/tests) repository.
+
+Check the [Blade Ink library source code](https://github.com/bladecoder/blade-ink-rs) for more info.
 
 ## Download
 
