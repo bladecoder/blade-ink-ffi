@@ -96,6 +96,33 @@ pub extern "C" fn bink_story_cont(
 
 #[allow(clippy::not_unsafe_ptr_arg_deref)]
 #[no_mangle]
+pub extern "C" fn bink_story_continue_maximally(
+    story: *mut Story,
+    lines: *mut *mut c_char,
+    err_msg: *mut *mut c_char,
+) -> u32 {
+    if story.is_null() {
+        return BINK_FAIL_NULL_POINTER;
+    }
+
+    let story: &mut Story = unsafe { &mut *story };
+
+    let result = story.continue_maximally();
+
+    match result {
+        Ok(l) => unsafe {
+            *lines = CString::new(l).unwrap().into_raw();
+            BINK_OK
+        },
+        Err(e) => unsafe {
+            *err_msg = CString::new(e.to_string()).unwrap().into_raw();
+            BINK_FAIL
+        },
+    }
+}
+
+#[allow(clippy::not_unsafe_ptr_arg_deref)]
+#[no_mangle]
 pub extern "C" fn bink_story_get_current_choices(
     story: *mut Story,
     choices: *mut *mut Vec<Rc<Choice>>,

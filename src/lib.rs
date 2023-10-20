@@ -5,6 +5,7 @@ use std::{ffi::CString, os::raw::c_char};
 pub mod cchoices;
 pub mod cstory;
 pub mod ctags;
+pub mod cvars;
 
 const BINK_OK: u32 = 0;
 const BINK_FAIL: u32 = 1;
