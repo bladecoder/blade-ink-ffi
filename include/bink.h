@@ -17,6 +17,7 @@ extern "C"
     typedef void BINK_Choices;
     typedef void BINK_Tags;
     typedef void BINK_Value;
+    typedef void BINK_FunArgs;
 
     int bink_story_new(BINK_Story **story, char *json_string, char **err_msg);
     void bink_story_free(BINK_Story *story);
@@ -52,6 +53,12 @@ extern "C"
     int bink_var_set(BINK_Story *story, char *name, BINK_Value *value, char **err_msg);
 
     int bink_observe_variable(BINK_Story *story, char *variable_name, void (*callback)(char *variable_name, void *user_data, BINK_Value *new_value), void *user_data, char **err_msg);
+
+    int bink_bind_external_function(BINK_Story *story, char *func_name, BINK_Value *(*callback)(char *func_name, BINK_FunArgs *args, void *user_data), void *user_data, char **err_msg);
+    int bink_unbind_external_function(BINK_Story *story, char *func_name, char **err_msg);
+
+    size_t bink_fun_args_count(BINK_FunArgs *args);
+    int bink_fun_args_get(BINK_FunArgs *args, size_t idx, BINK_Value **value, char **err_msg);
 
 #ifdef __cplusplus
 } /* extern "C" */

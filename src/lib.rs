@@ -3,6 +3,7 @@
 use std::{ffi::CString, os::raw::c_char};
 
 pub mod cchoices;
+pub mod cexternal_functions;
 pub mod cstory;
 pub mod ctags;
 pub mod cvalue;
