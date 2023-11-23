@@ -95,7 +95,6 @@ jobs:
         target: ${{ matrix.target }}
         toolchain: ${{ matrix.rust }}
         args: "--release"
-        strip: true     
 
     # - name: Install Rust
     #   uses: actions-rs/toolchain@v1
