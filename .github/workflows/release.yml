@@ -113,24 +113,24 @@ jobs:
         cp "include/bink.h" "$staging/"
 
         if [ "${{ matrix.os }}" = "windows-2019" ]; then
-          cp "target/release/bink.dll" "$staging/"
+          cp "target/${{ matrix.target }}/release/bink.dll" "$staging/"
           if [ "${{ matrix.build }}" = "win-gnu" ]; then
-            cp "target/release/libbink.a" "$staging/"
+            cp "target/${{ matrix.target }}/release/libbink.a" "$staging/"
           else
-            cp "target/release/bink.pdb" "$staging/"
-            cp "target/release/bink.lib" "$staging/"
+            cp "target/${{ matrix.target }}/release/bink.pdb" "$staging/"
+            cp "target/${{ matrix.target }}/release/bink.lib" "$staging/"
           fi
 
           7z a "$staging.zip" "$staging"
           echo "ASSET=$staging.zip" >> $GITHUB_ENV
         elif [ "${{ matrix.os }}" = "macos-latest" ]; then
-          cp "target/release/libbink.dylib" "$staging/"
-          cp "target/release/libbink.a" "$staging/"
+          cp "target/${{ matrix.target }}/release/libbink.dylib" "$staging/"
+          cp "target/${{ matrix.target }}/release/libbink.a" "$staging/"
           tar czf "$staging.tar.gz" "$staging"
           echo "ASSET=$staging.tar.gz" >> $GITHUB_ENV
         else
-          cp "target/release/libbink.so" "$staging/"
-          cp "target/release/libbink.a" "$staging/"
+          cp "target/${{ matrix.target }}/release/libbink.so" "$staging/"
+          cp "target/${{ matrix.target }}/release/libbink.a" "$staging/"
           tar czf "$staging.tar.gz" "$staging"
           echo "ASSET=$staging.tar.gz" >> $GITHUB_ENV
         fi
