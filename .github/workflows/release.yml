@@ -94,7 +94,7 @@ jobs:
         command: "build"
         target: ${{ matrix.target }}
         toolchain: ${{ matrix.rust }}
-        args: "--locked --release"
+        args: "--offline --release"
         strip: true     
 
     # - name: Install Rust
