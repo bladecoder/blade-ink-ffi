@@ -88,21 +88,30 @@ jobs:
       with:
         fetch-depth: 1
 
-    - name: Install Rust
-      uses: actions-rs/toolchain@v1
+    - name: Build binary
+      uses: houseabsolute/actions-rust-cross@v0
       with:
-        toolchain: ${{ matrix.rust }}
-        profile: minimal
-        override: true
-        target: ${{ matrix.target }}
+        command: "build"
+        target: ${{ matrix.platform.target }}
+        toolchain: ${{ matrix.platform.rust }}
+        args: "--locked --release"
+        strip: true     
 
-    - name: Show command used for Cargo
-      run: |
-        echo "cargo command is: ${{ env.CARGO }}"
-        echo "target dir is: ${{ env.TARGET_DIR }}"
+    # - name: Install Rust
+    #   uses: actions-rs/toolchain@v1
+    #   with:
+    #     toolchain: ${{ matrix.rust }}
+    #     profile: minimal
+    #     override: true
+    #     target: ${{ matrix.target }}
 
-    - name: Build release binary
-      run: ${{ env.CARGO }} build --verbose --release --target ${{ matrix.target }}
+    # - name: Show command used for Cargo
+    #   run: |
+    #     echo "cargo command is: ${{ env.CARGO }}"
+    #     echo "target dir is: ${{ env.TARGET_DIR }}"
+
+    # - name: Build release binary
+    #   run: ${{ env.CARGO }} build --verbose --release --target ${{ matrix.target }}
 
     - name: Build archive
       shell: bash
