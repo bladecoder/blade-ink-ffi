@@ -5,7 +5,10 @@ use std::{
     rc::Rc,
 };
 
-use bladeink::{story::Story, story_callbacks::VariableObserver, value_type::ValueType};
+use bladeink::{
+    story::{variable_observer::VariableObserver, Story},
+    value_type::ValueType,
+};
 
 use crate::{BINK_FAIL, BINK_FAIL_NULL_POINTER, BINK_OK};
 
