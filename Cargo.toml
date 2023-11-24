@@ -1,6 +1,6 @@
 [package]
 name = "bink-ffi"
-version = "0.4.1"
+version = "0.4.2"
 description = """
 C bindings for the Blade Ink Rust library.
 """
@@ -16,4 +16,4 @@ path = "src/lib.rs"
 crate-type = ["cdylib", "staticlib"]
 
 [dependencies]
-bladeink = "1.0.0"
+bladeink = "1.0.1"
