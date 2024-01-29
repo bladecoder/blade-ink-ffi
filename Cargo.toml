@@ -16,4 +16,4 @@ path = "src/lib.rs"
 crate-type = ["cdylib", "staticlib"]
 
 [dependencies]
-bladeink = "1.0.1"
+bladeink = "1.0.3"
