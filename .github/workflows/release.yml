@@ -76,7 +76,7 @@ jobs:
         mkdir "$staging"
         cp "include/bink.h" "$staging/"
 
-        if [ "${{ matrix.os }}" = "windows-2019" ]; then
+        if [ "${{ matrix.os }}" = "windows-latest" ]; then
           cp "target/${{ matrix.target }}/release/bink.dll" "$staging/"
           if [ "${{ matrix.build }}" = "win-gnu" ]; then
             cp "target/${{ matrix.target }}/release/libbink.a" "$staging/"
