@@ -43,7 +43,7 @@ pub extern "C" fn bink_value_new_string(value: *const c_char) -> *mut ValueType 
     let value_c_str: &CStr = unsafe { CStr::from_ptr(value) };
     let value_str_slice: &str = value_c_str.to_str().unwrap();
 
-    let v = ValueType::new_string(value_str_slice);
+    let v = ValueType::from(value_str_slice);
 
     let value_type = Box::into_raw(Box::new(v));
 
