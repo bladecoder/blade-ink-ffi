@@ -1,43 +1,10 @@
-name: Release
+name: Generate binaries and upload to GitHub Releases
 on:
-  push:
-    # Enable when testing release infrastructure on a branch.
-    #branches:
-    #- release-infra
-    tags:
-    - "v[0-9]+.[0-9]+.[0-9]+"
+  release:
+    types: [published]
 jobs:
-  create-release:
-    name: create-release
-    runs-on: ubuntu-latest
-    #env:
-      # Set to force version number, e.g., when no tag exists.
-      # BINK_VERSION: TEST-0.0.0
-    outputs:
-      upload_url: ${{ steps.release.outputs.upload_url }}
-      bink_version: ${{ env.BINK_VERSION }}
-    steps:
-      - name: Get the release version from the tag
-        shell: bash
-        if: env.BINK_VERSION == ''
-        run: |
-          # Apparently, this is the right way to get a tag name. Really?
-          #
-          # See: https://github.community/t5/GitHub-Actions/How-to-get-just-the-tag-name/m-p/32167/highlight/true#M1027
-          echo "BINK_VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
-          echo "version is: ${{ env.BINK_VERSION }}"
-      - name: Create GitHub release
-        id: release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ env.BINK_VERSION }}
-          release_name: ${{ env.BINK_VERSION }}
-
   build-release:
     name: build-release
-    needs: ['create-release']
     runs-on: ${{ matrix.os }}
     env:
       # For some builds, we use cross to test on 32-bit and big-endian
@@ -88,6 +55,12 @@ jobs:
       with:
         fetch-depth: 1
 
+    - name: Get release version and upload_url
+      id: get_release
+      run: |
+        echo "BINK_VERSION=${{ github.event.release.tag_name }}" >> $GITHUB_ENV
+        echo "UPLOAD_URL=${{ github.event.release.upload_url }}" >> $GITHUB_ENV
+
     - name: Build binary
       uses: houseabsolute/actions-rust-cross@v0
       with:
@@ -96,27 +69,10 @@ jobs:
         toolchain: ${{ matrix.rust }}
         args: "--release"
 
-    # - name: Install Rust
-    #   uses: actions-rs/toolchain@v1
-    #   with:
-    #     toolchain: ${{ matrix.rust }}
-    #     profile: minimal
-    #     override: true
-    #     target: ${{ matrix.target }}
-
-    # - name: Show command used for Cargo
-    #   run: |
-    #     echo "cargo command is: ${{ env.CARGO }}"
-    #     echo "target dir is: ${{ env.TARGET_DIR }}"
-
-    # - name: Build release binary
-    #   run: ${{ env.CARGO }} build --verbose --release --target ${{ matrix.target }}
-
     - name: Build archive
       shell: bash
       run: |
-        # outdir="$(ci/cargo-out-dir "${{ env.TARGET_DIR }}")"
-        staging="libbink-${{ needs.create-release.outputs.bink_version }}-${{ matrix.target }}"
+        staging="libbink-${{ env.BINK_VERSION }}-${{ matrix.target }}"
         mkdir "$staging"
         cp "include/bink.h" "$staging/"
 
@@ -148,7 +104,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        upload_url: ${{ needs.create-release.outputs.upload_url }}
+        upload_url: ${{ env.UPLOAD_URL }}
         asset_path: ${{ env.ASSET }}
         asset_name: ${{ env.ASSET }}
         asset_content_type: application/octet-stream
